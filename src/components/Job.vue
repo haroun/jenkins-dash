@@ -6,19 +6,19 @@
           {{ job.title }}
         </a>
       </th>
-      <td>
+      <td title="branch">
         {{ job.branch }}
       </td>
       <td>
         {{ job | formatStatus }}
       </td>
-      <td>
-        {{ job.commit }}
+      <td title="commit">
+        {{ job.commit | formatCommit }}
       </td>
-      <td>
+      <td title="duration">
         {{ job.duration | formatDuration }}
       </td>
-      <td>
+      <td title="finished">
         {{ job.finished | formatRelativeDate }}
       </td>
     </tr>
@@ -32,17 +32,19 @@ export default {
     job: Object
   },
   filters: {
+    formatCommit: commit => `#${commit}`,
     formatStatus: job => `${job.lastBuild} ${job.status}`,
-    formatDuration: time => '',
+    formatDuration: time => time,
     formatRelativeDate: time => {
       const when = Date.parse(time)
+      return time
       const diff = Date.now() - when
-      [
+      ;[
         {label: 'seconds', value: 1000},
         {label: 'minutes', value: 60},
         {label: 'hours', value: 60},
         {label: 'days', value: 24},
-        {label: 'months', value: 30.42},
+        {label: 'months', value: 30},
         {label: 'years', value: 12}
       ].reduce(
         (accumulator, current, index, source) => {
@@ -61,17 +63,6 @@ export default {
         },
         {label: 'milliseconds', value: when}
       )
-
-
-
-      const seconds = Math.floor(diff / 1000)
-      const minutes = Math.floor(diff / (60 * 1000))
-      const hours = Math.floor(diff / (60 * 60 * 1000))
-      const days = Math.floor(diff / (24 * 60 * 60 * 1000))
-      const months = Math.floor(diff / (30 * 24 * 60 * 60 * 1000))
-      const suffix = seconds / 1000 < 60
-        ? 'seconds ago'
-        : seconds / (60 * 1000)
     }
   }
 }
@@ -79,20 +70,43 @@ export default {
 
 <style scoped>
 h3 {
-  margin: 40px 0 0;
+  margin: 1rem 0 0;
 }
 a {
   color: #42b983;
 }
+.job {
+  border-radius: 1%;
+  box-shadow: 0 0 2px #444;
+  padding: 1rem 0.8rem;
+  margin: 0.5rem 0;
+  width: 100%;
+}
+tr {
+  text-align: left;
+  display: grid;
+  grid-template-columns: 15% repeat(5, 15%);
+  grid-gap: 1rem;
+  /* grid-template-areas: "title meta meta meta meta meta"; */
+}
+th {
+  /* grid-area: title; */
+  /* padding-right: 1rem; */
+}
+td {
+  /* grid-area: meta; */
+  font-size: 0.8rem;
+  /* padding: 0 1rem; */
+}
 
 .pending {}
 .succeed {
-  background-color: green;
+  color: #90ee90;
 }
 .failed {
-  background-color: red;
+  color: #ee9090;
 }
 .disabled {
-  background-color: grey;
+  color: #989898;
 }
 </style>

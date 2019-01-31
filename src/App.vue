@@ -41,6 +41,16 @@ export default {
           commit: '95374ac',
           duration: '0 m 37 sec',
           finished: '7 minutes ago'
+        },
+        {
+          target: 'http://www.harounatraore.com',
+          title: 'jenkins-dash',
+          branch: 'master',
+          status: 'disabled',
+          lastBuild: '',
+          commit: '42182fc',
+          duration: '',
+          finished: ''
         }
       ]
     }
@@ -65,5 +75,9 @@ ul {
 li {
   display: inline-block;
   margin: 0 10px;
+  width: 700px;
+}
+a {
+  text-decoration: none;
 }
 </style>
